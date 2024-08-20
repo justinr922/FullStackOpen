@@ -17,5 +17,12 @@ sequenceDiagram
     server-->>browser: the JS file
     deactivate server
 
-    Note right of browser: The browser executes JS code from server
+    Note left of browser: The browser executes JS code from server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: data.json
+    deactivate server
+
+    note left of browser: Browser executes callback funtion, rendering notes
 ```
