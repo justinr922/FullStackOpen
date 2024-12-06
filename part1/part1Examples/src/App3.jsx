@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const App3 = () => {
   const [counter, setCounter] = useState(0);
 
