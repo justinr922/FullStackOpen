@@ -1,4 +1,3 @@
-import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 
@@ -26,15 +25,18 @@ const App = () => {
   const age = 10;
 
   // Second example
-  let counter = 1;
   return (
     <div>
       <div>
+      <h1>------------Example 1---------------</h1>
+
         <h1>Greetings</h1>
         <Hello name="Maya" age={26 + 10} />
         <Hello name={name} age={age} />
       </div>
-      <App2 counter={counter}/>
+      <h1>------------Example 2---------------</h1>
+      <App2/>
+      <h1>------------Example 3---------------</h1>
     </div>
   );
 };
