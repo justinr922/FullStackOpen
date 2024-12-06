@@ -2,7 +2,9 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 
-const Hello = ({age, name}) => {
+import App2 from "./App2";
+
+const Hello = ({ age, name }) => {
   const bornYear = () => {
     const yearNow = new Date().getFullYear();
     return yearNow - age;
@@ -19,14 +21,20 @@ const Hello = ({age, name}) => {
 };
 
 const App = () => {
+  // First example
   const name = "Peter";
   const age = 10;
 
+  // Second example
+  let counter = 1;
   return (
     <div>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10} />
-      <Hello name={name} age={age} />
+      <div>
+        <h1>Greetings</h1>
+        <Hello name="Maya" age={26 + 10} />
+        <Hello name={name} age={age} />
+      </div>
+      <App2 counter={counter}/>
     </div>
   );
 };
