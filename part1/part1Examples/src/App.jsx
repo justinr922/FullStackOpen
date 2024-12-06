@@ -2,6 +2,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 
 import App2 from "./App2";
+import App3 from "./App3";
 
 const Hello = ({ age, name }) => {
   const bornYear = () => {
@@ -37,6 +38,7 @@ const App = () => {
       <h1>------------Example 2---------------</h1>
       <App2/>
       <h1>------------Example 3---------------</h1>
+      <App3/>
     </div>
   );
 };
