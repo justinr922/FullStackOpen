@@ -9,10 +9,9 @@ const Result = (props) => {
   const { p_text, p_result, p_suffix } = props;
   console.log(p_result);
   return (
-    <p>
-      {p_text} {p_result}
-      {p_suffix}
-    </p>
+    <tr>
+      <td>{p_text}</td><td>{p_result}{p_suffix}</td> 
+    </tr>
   );
 };
 
@@ -32,16 +31,14 @@ const Statistics = (props) => {
   return (
     <div>
       <h1>Statistics</h1>
-      <Result p_result={p_good} p_text="Good" />
-      <Result p_result={p_neutral} p_text="Neutral" />
-      <Result p_result={p_bad} p_text="Bad" />
-      <Result p_result={p_total} p_text="All" />
-      <Result p_result={p_average || 0} p_text="Average" />
-      <Result
-        p_result={p_percentPositive.toFixed(2)}
-        p_text="Positive"
-        p_suffix="%"
-      />
+      <table>
+        <Result p_result={p_good} p_text="Good" />
+        <Result p_result={p_neutral} p_text="Neutral" />
+        <Result p_result={p_bad} p_text="Bad" />
+        <Result p_result={p_total} p_text="All" />
+        <Result p_result={p_average || 0} p_text="Average" />
+        <Result p_result={p_percentPositive.toFixed(2)} p_text="Positive" p_suffix="%" />
+      </table>
     </div>
   );
 };
