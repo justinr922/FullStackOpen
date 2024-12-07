@@ -15,6 +15,20 @@ const Result = (props) => {
   );
 };
 
+const Statistics = (props) => {
+  const {p_good, p_neutral, p_bad, p_total, p_average, p_percentPositive} = props;
+  return (
+  <div>
+      <h1>Statistics</h1>
+      <Result p_result={p_good} p_text="Good" />
+      <Result p_result={p_neutral} p_text="Neutral" />
+      <Result p_result={p_bad} p_text="Bad" />
+      <Result p_result={p_total} p_text="All"/>
+      <Result p_result={p_average || 0} p_text="Average"/>
+      <Result p_result={p_percentPositive.toFixed(2)} p_text="Positive" p_suffix='%'/>
+  </div>
+)}
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
@@ -34,13 +48,7 @@ const App = () => {
       <FeedbackButton p_handleClick={handleGoodClick} p_text="Good" />
       <FeedbackButton p_handleClick={handleNeutralClick} p_text="Neutral" />
       <FeedbackButton p_handleClick={handleBadClick} p_text="Bad" />
-      <h1>Statistics</h1>
-      <Result p_result={good} p_text="Good" />
-      <Result p_result={neutral} p_text="Neutral" />
-      <Result p_result={bad} p_text="Bad" />
-      <Result p_result={total} p_text="All"/>
-      <Result p_result={average || 0} p_text="Average"/>
-      <Result p_result={percentPositive.toFixed(2)} p_text="Positive" p_suffix='%'/>
+      <Statistics p_good={good} p_neutral={neutral} p_bad={bad} p_total={total} p_average={average} p_percentPositive={percentPositive}/>
     </div>
   );
 };
