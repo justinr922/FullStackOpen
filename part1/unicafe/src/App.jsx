@@ -36,6 +36,8 @@ const App = () => {
       <Result p_state={good} p_text="Good" />
       <Result p_state={neutral} p_text="Neutral" />
       <Result p_state={bad} p_text="Bad" />
+      <Result p_state={total} p_text="All"/>
+      <Result p_state={average} p_text="Average"/>
     </div>
   );
 };
