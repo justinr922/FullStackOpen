@@ -7,7 +7,7 @@ const FeedbackButton = (props) => {
 
 const Result = (props) => {
   const { p_text, p_result, p_suffix } = props;
-  console.log(p_result);
+  // console.log(p_result);
   return (
     <tr>
       <td>{p_text}</td><td>{p_result}{p_suffix}</td> 
@@ -32,12 +32,14 @@ const Statistics = (props) => {
     <div>
       <h1>Statistics</h1>
       <table>
-        <Result p_result={p_good} p_text="Good" />
-        <Result p_result={p_neutral} p_text="Neutral" />
-        <Result p_result={p_bad} p_text="Bad" />
-        <Result p_result={p_total} p_text="All" />
-        <Result p_result={p_average || 0} p_text="Average" />
-        <Result p_result={p_percentPositive.toFixed(2)} p_text="Positive" p_suffix="%" />
+        <tbody>
+          <Result p_result={p_good} p_text="Good" />
+          <Result p_result={p_neutral} p_text="Neutral" />
+          <Result p_result={p_bad} p_text="Bad" />
+          <Result p_result={p_total} p_text="All" />
+          <Result p_result={p_average.toFixed(2)} p_text="Average" />
+          <Result p_result={p_percentPositive.toFixed(2)} p_text="Positive" p_suffix="%" />
+        </tbody>
       </table>
     </div>
   );
@@ -53,12 +55,12 @@ const App = () => {
   const handleNeutralClick = () => setNeutral(neutral + 1);
   const handleBadClick = () => setBad(bad + 1);
   const total = good + bad + neutral;
-  const average = (good - bad) / total;
+  const average = (good - bad) / total || 0;
   const percentPositive = (good / total || 0) * 100.0;
 
   return (
     <div>
-      <h1>Give Feeback</h1>
+      <h1>Give Feedback</h1>
       <FeedbackButton p_handleClick={handleGoodClick} p_text="Good" />
       <FeedbackButton p_handleClick={handleNeutralClick} p_text="Neutral" />
       <FeedbackButton p_handleClick={handleBadClick} p_text="Bad" />
