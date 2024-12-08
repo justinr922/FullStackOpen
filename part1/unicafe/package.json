@@ -27,5 +27,6 @@
     "gh-pages": "^6.2.0",
     "globals": "^15.12.0",
     "vite": "^6.0.1"
-  }
+  },
+  "homepage":"http://justinr922.github.io/FullStackOpen"
 }
