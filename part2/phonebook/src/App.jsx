@@ -33,8 +33,8 @@ const App = () => {
       number: '123-5555'
     },
     {
-      name:'Jartha',
-      number:'456-5555'
+      name: 'Jartha',
+      number: '456-5555'
     }
   ])
   const [newName, setNewName] = useState('')
@@ -75,15 +75,19 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <form>
-        <input value={filter} onChange={handleFilterChange}/>
+        <input value={filter} onChange={handleFilterChange} />
       </form>
       <h2>Add a new entry</h2>
       <NewEntryForm onNameChange={handleNameChange} onNumberChange={handleNumberChange} onSubmitForm={addPerson} newName={newName} newNumber={newNumber} />
       <h2>Numbers</h2>
       <ul>
-        {persons
-        .filter(x => x.name.toLowerCase().includes(filter.toLowerCase()))
-        .map(x => <li key={x.name}>{x.name} {x.number}</li>)}
+        {
+        persons
+          .filter(x => x.name.toLowerCase().includes(filter.toLowerCase()))
+          .map(x => 
+          <li key={x.name}>{x.name} {x.number}</li>
+        )
+        }
       </ul>
     </div>
   )
