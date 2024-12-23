@@ -1,13 +1,21 @@
 import { useState } from 'react'
 
+
+
 const NewEntryForm = (props) => {
   const onNameChange = props.onNameChange
+  const onNumberChange = props.onNumberChange
   const onSubmitForm = props.onSubmitForm
   const newName = props.newName
+  const newNumber = props.newNumber
+
   return (
     <form onSubmit={onSubmitForm}>
       <div>
         name: <input value={newName} onChange={onNameChange} />
+      </div>
+      <div>
+        number: <input value={newNumber} onChange={onNumberChange} />
       </div>
       <div>
         <button type="submit">add</button>
@@ -18,13 +26,22 @@ const NewEntryForm = (props) => {
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    {
+      name: 'Arto Hellas',
+      number: '123-5555'
+    }
   ])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const handleNameChange = (event) => {
     // console.log(newName)
     setNewName(event.target.value)
+  }
+
+  const handleNumberChange = (event) => {
+    // console.log(newName)
+    setNewNumber(event.target.value)
   }
 
   const addPerson = (event) => {
@@ -34,20 +51,22 @@ const App = () => {
       alert(`${newName} is already in the Phonebook!`)
     } else {
       const newPerson = {
-        name: newName
+        name: newName,
+        number: newNumber
       }
       setPersons(persons.concat(newPerson))
       setNewName('')
+      setNewNumber('')
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <NewEntryForm onNameChange={handleNameChange} onSubmitForm={addPerson} newName={newName}/>
+      <NewEntryForm onNameChange={handleNameChange} onNumberChange={handleNumberChange} onSubmitForm={addPerson} newName={newName} newNumber={newNumber} />
       <h2>Numbers</h2>
       <ul>
-        {persons.map(x => <li key={x.name}>{x.name}</li>)}
+        {persons.map(x => <li key={x.name}>{x.name} {x.number}</li>)}
       </ul>
     </div>
   )
