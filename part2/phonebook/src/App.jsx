@@ -64,11 +64,24 @@ const Phonebook = ({ persons, filter, deletePerson }) => {
   )
 }
 
+const Confirmation = ({confirmation}) => {
+  if (confirmation === null) {
+    return null
+  } else {
+    return (
+      <div className='confirmation'>
+        {confirmation}
+      </div>
+    )
+  }
+}
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [confirmation, setConfirmation] = useState(null)
 
   useEffect(() => {
     personService
@@ -101,6 +114,8 @@ const App = () => {
             )
             setNewName('')
             setNewNumber('')
+            setConfirmation(`${person.name}'s number updated successfully.`)
+            setTimeout(() => setConfirmation(null), 5000)
           }
         )
     }
@@ -128,6 +143,8 @@ const App = () => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
+          setConfirmation(`${response.data.name} added successfully.`)
+          setTimeout(() => setConfirmation(null), 5000)
         })
 
     }
@@ -141,6 +158,8 @@ const App = () => {
         .then((response) => {
           // console.log(persons)
           setPersons(persons.filter((x) => x.id !== person.id))
+          setConfirmation(`${person.name} successfully deleted.`)
+          setTimeout(() => setConfirmation(null), 5000)
         })
     }
   }
@@ -151,6 +170,7 @@ const App = () => {
 
   return (
     <div>
+      <Confirmation confirmation={confirmation}/>
       <h2>Phonebook</h2>
       <SearchFilter filter={filter} handleFilterChange={handleFilterChange} />
       <NewEntryForm onNameChange={handleNameChange} onNumberChange={handleNumberChange} onSubmitForm={addPerson} newName={newName} newNumber={newNumber} />
