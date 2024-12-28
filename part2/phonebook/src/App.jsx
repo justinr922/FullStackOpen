@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios  from 'axios'
+import axios from 'axios'
 import personService from './services/persons'
 
 
@@ -38,13 +38,16 @@ const SearchFilter = ({ filter, handleFilterChange }) => {
   )
 }
 
-const PhonebookListing = ({ person }) => {
+const PhonebookListing = ({ person, deletePerson }) => {
   return (
-    <li key={person.name}>{person.name} {person.number}</li>
+    <li key={person.id}>
+      {person.name} {person.number}
+      <button onClick={() => deletePerson(person)}>Delete</button>
+    </li>
   )
 }
 
-const Phonebook = ({ persons, filter }) => {
+const Phonebook = ({ persons, filter, deletePerson }) => {
   return (
     <div>
       <h2>Numbers</h2>
@@ -53,7 +56,7 @@ const Phonebook = ({ persons, filter }) => {
           persons
             .filter(x => x.name.toLowerCase().includes(filter.toLowerCase()))
             .map(x =>
-              <PhonebookListing key={x.name} person={x} />
+              <PhonebookListing key={x.id} person={x} deletePerson={deletePerson} />
             )
         }
       </ul>
@@ -85,24 +88,60 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const updateNumber = (person) => {
+    // console.log(person)
+    if (window.confirm(`${person.name} already exists in the phonebook. Would you like to replace the existing number for ${person.name}?`)) {
+      personService
+        .update(person.id, person)
+        .then((response) => {
+            setPersons(
+              persons
+              .filter(x => x.id !== person.id)
+              .concat(response.data)
+            )
+            setNewName('')
+            setNewNumber('')
+          }
+        )
+    }
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
 
-    if (persons.map(x => x.name).includes(newName)) {
-      alert(`${newName} is already in the Phonebook!`)
+    const newPerson = {
+      name: newName,
+      number: newNumber
+    }
+    const existingPersonSearch = persons.find(x => x.name === newPerson.name)
+    if (existingPersonSearch) {
+      // console.log(existingPersonSearch)
+      updateNumber(
+        {...newPerson, 
+          id: existingPersonSearch.id
+        }
+      )
     } else {
-      const newPerson = {
-        name: newName,
-        number: newNumber
-      }
-      axios
-        .post('http://localhost:3001/persons', newPerson)
+      personService
+        .create(newPerson)
         .then((response) => {
-          setPersons(persons.concat(newPerson))
+          setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
         })
-      
+
+    }
+  }
+
+  const deletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      // console.log(person.id)
+      personService
+        .deletePerson(person.id)
+        .then((response) => {
+          // console.log(persons)
+          setPersons(persons.filter((x) => x.id !== person.id))
+        })
     }
   }
 
@@ -115,7 +154,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <SearchFilter filter={filter} handleFilterChange={handleFilterChange} />
       <NewEntryForm onNameChange={handleNameChange} onNumberChange={handleNumberChange} onSubmitForm={addPerson} newName={newName} newNumber={newNumber} />
-      <Phonebook persons={persons} filter={filter} />
+      <Phonebook persons={persons} filter={filter} deletePerson={deletePerson} />
     </div>
   )
 }
