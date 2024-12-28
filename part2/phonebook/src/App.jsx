@@ -64,7 +64,7 @@ const Phonebook = ({ persons, filter, deletePerson }) => {
   )
 }
 
-const Confirmation = ({confirmation}) => {
+const Confirmation = ({ confirmation }) => {
   if (confirmation === null) {
     return null
   } else {
@@ -76,13 +76,25 @@ const Confirmation = ({confirmation}) => {
   }
 }
 
+const Error = ({ error }) => {
+  if (error === null) {
+    return null
+  } else {
+    return (
+      <div className='error'>
+        {error}
+      </div>
+    )
+  }
+}
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [confirmation, setConfirmation] = useState(null)
-
+  const [error, setError] = useState(null)
   useEffect(() => {
     personService
       .getAll()
@@ -103,21 +115,25 @@ const App = () => {
 
   const updateNumber = (person) => {
     // console.log(person)
-    if (window.confirm(`${person.name} already exists in the phonebook. Would you like to replace the existing number for ${person.name}?`)) {
+    if (window.confirm(`User ${person.name} already exists in the phonebook. Would you like to replace the existing number for ${person.name}?`)) {
       personService
         .update(person.id, person)
         .then((response) => {
-            setPersons(
-              persons
+          setPersons(
+            persons
               .filter(x => x.id !== person.id)
               .concat(response.data)
-            )
-            setNewName('')
-            setNewNumber('')
-            setConfirmation(`${person.name}'s number updated successfully.`)
-            setTimeout(() => setConfirmation(null), 5000)
-          }
+          )
+          setNewName('')
+          setNewNumber('')
+          setConfirmation(`Number for user "${person.name}" updated successfully.`)
+          setTimeout(() => setConfirmation(null), 5000)
+        }
         )
+        .catch(error => {
+          setError(`No "${person.name}" exists. They must have been removed from the server. No update made.`)
+          setTimeout(() => setError(null), 5000)
+        })
     }
   }
 
@@ -132,7 +148,8 @@ const App = () => {
     if (existingPersonSearch) {
       // console.log(existingPersonSearch)
       updateNumber(
-        {...newPerson, 
+        {
+          ...newPerson,
           id: existingPersonSearch.id
         }
       )
@@ -143,7 +160,7 @@ const App = () => {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
-          setConfirmation(`${response.data.name} added successfully.`)
+          setConfirmation(`New user "${response.data.name}" added successfully.`)
           setTimeout(() => setConfirmation(null), 5000)
         })
 
@@ -158,8 +175,12 @@ const App = () => {
         .then((response) => {
           // console.log(persons)
           setPersons(persons.filter((x) => x.id !== person.id))
-          setConfirmation(`${person.name} successfully deleted.`)
+          setConfirmation(`User "${person.name}" successfully deleted.`)
           setTimeout(() => setConfirmation(null), 5000)
+        })
+        .catch(error => {
+          setError(`No "${person.name}" exists. They must have been removed from the server. No delete made.`)
+          setTimeout(() => setError(null), 5000)
         })
     }
   }
@@ -170,7 +191,8 @@ const App = () => {
 
   return (
     <div>
-      <Confirmation confirmation={confirmation}/>
+      <Confirmation confirmation={confirmation} />
+      <Error error={error} />
       <h2>Phonebook</h2>
       <SearchFilter filter={filter} handleFilterChange={handleFilterChange} />
       <NewEntryForm onNameChange={handleNameChange} onNumberChange={handleNumberChange} onSubmitForm={addPerson} newName={newName} newNumber={newNumber} />
